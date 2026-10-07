@@ -26,6 +26,10 @@ os.makedirs(f'{DIST}/assets', exist_ok=True)
 for f in ['2zq26fv-w3ylr.css', '3197uc4c-hv2_.css', '2ircu5rqc450t.css']:
     shutil.copy(f'{REF}/{f}', f'{DIST}/assets/{f}')
 shutil.copy(f'{REF}/70bc3e132a0a741e-s.p.269kn9uafm0ti.woff2', f'{DIST}/assets/font.woff2')
+# all ../media/* referenced by the css (codicon, font subsets) -> dist/media/
+os.makedirs(f'{DIST}/media', exist_ok=True)
+for f in os.listdir('/tmp/med'):
+    shutil.copy(f'/tmp/med/{f}', f'{DIST}/media/{f}')
 
 # logo: resize generated art to 256 and 64
 from PIL import Image
@@ -73,7 +77,15 @@ m = re.search(r'<link rel="icon"[^>]*>', html)
 if m: html = html.replace(m.group(0), '<link rel="icon" href="@root/logo-64.webp" type="image/webp"/>')
 m = re.search(r'<link rel="apple-touch-icon"[^>]*>', html)
 if m: html = html.replace(m.group(0), '<link rel="apple-touch-icon" href="@root/apple-touch-icon.webp"/>')
-sub('</head>', '<script src="@root/assets/site.js" defer></script>\n</head>')
+sub('</head>', '''<script src="@root/assets/site.js" defer></script>
+<style>
+html, body { overflow-x: clip; }
+@media (max-width: 767px) {
+  main .mt-10 > div, main section, main ul { min-width: 0; }
+  main a { overflow-wrap: anywhere; }
+}
+</style>
+</head>''')
 
 # ---- chrome ----
 sub('src="/logo-64.webp" width="18" height="18" alt="maaz.code logo"', 'src="@root/logo-64.webp" width="18" height="18" alt="mystic.code logo"')
