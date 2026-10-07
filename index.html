@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rishabh Bohra · mystic.code</title>
+<meta name="description" content="Portfolio of Rishabh Bohra — embedded systems, mobile apps, security research.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231e1e1e'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='17' fill='%234ec9b0' text-anchor='middle'%3E%3E_%3C/text%3E%3C/svg%3E">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+
+  [data-theme="midnight"] {
+    --bg: #1e1e1e; --bg2: #252526; --bg3: #2d2d2d; --hover: #2a2d2e;
+    --fg: #d4d4d4; --muted: #858585; --faint: #5a5a5a;
+    --border: #3c3c3c; --accent: #4ec9b0; --link: #4fc1ff;
+    --green: #4ec9b0; --yellow: #dcdcaa; --blue: #4fc1ff; --purple: #c586c0; --orange: #ce9178;
+    --tab-bg: #2d2d2d; --tab-active-bg: #1e1e1e; --status-bg: #0e639c; --status-fg: #ffffff;
+  }
+  [data-theme="forest"] {
+    --bg: #101a14; --bg2: #16241b; --bg3: #1d3023; --hover: #1a2b20;
+    --fg: #cfe3d4; --muted: #7d917f; --faint: #4c5f50;
+    --border: #2c4232; --accent: #7dd87d; --link: #8fd6a4;
+    --green: #7dd87d; --yellow: #e3d27d; --blue: #7fc4e3; --purple: #c49ae3; --orange: #e3a47f;
+    --tab-bg: #1d3023; --tab-active-bg: #101a14; --status-bg: #1f5c33; --status-fg: #eaffef;
+  }
+  [data-theme="ember"] {
+    --bg: #1f1611; --bg2: #281c15; --bg3: #33241a; --hover: #2e2018;
+    --fg: #e6d5c3; --muted: #93796a; --faint: #5d4c42;
+    --border: #453227; --accent: #e8935c; --link: #f0b35c;
+    --green: #9fd68f; --yellow: #f0d35c; --blue: #7fc4e3; --purple: #d69ac0; --orange: #e8935c;
+    --tab-bg: #33241a; --tab-active-bg: #1f1611; --status-bg: #8a3d1a; --status-fg: #fff3e8;
+  }
+  [data-theme="grape"] {
+    --bg: #1b1426; --bg2: #231a30; --bg3: #2c2138; --hover: #291e36;
+    --fg: #d9cdf0; --muted: #8d7fa8; --faint: #594d6e;
+    --border: #3d2f52; --accent: #b48cf2; --link: #9ab8f2;
+    --green: #8fd6a4; --yellow: #e3d27d; --blue: #9ab8f2; --purple: #b48cf2; --orange: #e3a47f;
+    --tab-bg: #2c2138; --tab-active-bg: #1b1426; --status-bg: #5b2f8a; --status-fg: #f4ecff;
+  }
+
+  body {
+    font-family: ui-monospace, "JetBrains Mono", "Cascadia Code", Consolas, Menlo, monospace;
+    background: var(--bg); color: var(--fg); font-size: 14px; line-height: 1.6;
+    overflow: hidden;
+  }
+  ::selection { background: var(--accent); color: var(--bg); }
+
+  #ide { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+
+  /* ---------- title bar ---------- */
+  .titlebar {
+    height: 38px; flex: 0 0 38px; background: var(--bg2);
+    display: flex; align-items: center; padding: 0 12px; gap: 12px;
+    border-bottom: 1px solid var(--border); user-select: none;
+  }
+  .traffic { display: flex; gap: 7px; }
+  .traffic span { width: 11px; height: 11px; border-radius: 50%; }
+  .traffic .r { background: #ff5f57; } .traffic .y { background: #febc2e; } .traffic .g { background: #28c840; }
+  .titlebar .title { flex: 1; text-align: center; color: var(--muted); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .titlebar .title b { color: var(--fg); font-weight: 600; }
+  .simple-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    font: inherit; font-size: 12px; padding: 4px 10px; border-radius: 5px; cursor: pointer;
+  }
+  .simple-btn:hover { color: var(--fg); background: var(--hover); }
+
+  /* ---------- workbench ---------- */
+  .workbench { flex: 1; display: flex; min-height: 0; }
+
+  .activitybar {
+    flex: 0 0 48px; background: var(--bg2); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: center; padding-top: 8px; gap: 4px;
+  }
+  .act {
+    width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+    color: var(--faint); background: transparent; border: none; border-left: 2px solid transparent;
+    cursor: pointer; font-size: 19px; border-radius: 0;
+  }
+  .act:hover { color: var(--fg); }
+  .act.active { color: var(--fg); border-left-color: var(--accent); }
+  .act .tip { position: absolute; left: 52px; background: var(--bg3); border: 1px solid var(--border); color: var(--fg); font-size: 12px; padding: 3px 8px; border-radius: 4px; display: none; white-space: nowrap; z-index: 50; }
+  .act:hover .tip { display: block; }
+
+  .sidebar {
+    flex: 0 0 240px; background: var(--bg2); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; min-height: 0; overflow-y: auto;
+  }
+  .side-head { font-size: 11px; letter-spacing: 1.5px; color: var(--muted); padding: 10px 14px 6px; text-transform: uppercase; }
+  .tree { padding: 0 6px 12px; font-size: 13px; }
+  .tgroup { color: var(--fg); font-weight: 600; padding: 6px 8px 2px; font-size: 12.5px; }
+  .tfile {
+    display: flex; align-items: center; gap: 8px; padding: 5px 8px 5px 22px;
+    color: var(--muted); cursor: pointer; border-radius: 4px; white-space: nowrap;
+  }
+  .tfile:hover { background: var(--hover); color: var(--fg); }
+  .tfile.active { background: var(--hover); color: var(--fg); }
+  .tfile .ext { margin-left: auto; font-size: 11px; color: var(--faint); }
+  .dot { width: 8px; height: 8px; border-radius: 2px; flex: 0 0 8px; }
+
+  .editor { flex: 1; display: flex; flex-direction: column; min-width: 0; background: var(--bg); }
+  .tabs { display: flex; background: var(--bg2); border-bottom: 1px solid var(--border); overflow-x: auto; flex: 0 0 auto; }
+  .tab {
+    display: flex; align-items: center; gap: 8px; padding: 9px 12px; font-size: 12.5px;
+    color: var(--muted); background: var(--tab-bg); border-right: 1px solid var(--border);
+    cursor: pointer; white-space: nowrap; border-top: 1px solid transparent;
+  }
+  .tab.active { background: var(--tab-active-bg); color: var(--fg); border-top-color: var(--accent); }
+  .tab .x { color: var(--faint); font-size: 14px; line-height: 1; padding: 0 2px; border-radius: 3px; }
+  .tab .x:hover { color: var(--fg); background: var(--hover); }
+  .panes { flex: 1; overflow-y: auto; min-height: 0; }
+  .pane { display: none; padding: 28px 32px 60px; max-width: 860px; }
+  .pane.active { display: block; }
+
+  .crumb { font-size: 12px; color: var(--faint); margin-bottom: 18px; }
+  .crumb b { color: var(--muted); font-weight: 400; }
+  h1.hero { font-size: 30px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 4px; }
+  h1.hero .accent { color: var(--accent); }
+  .tagline { color: var(--muted); font-size: 13.5px; margin-bottom: 10px; }
+  .tagline .sep { color: var(--faint); margin: 0 6px; }
+  .bio { color: var(--fg); max-width: 640px; margin: 14px 0 6px; }
+  .quote { border-left: 3px solid var(--accent); padding: 8px 14px; margin: 18px 0 26px; color: var(--muted); font-style: italic; max-width: 640px; }
+
+  h2.sec { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--faint); margin: 30px 0 12px; font-weight: 600; }
+  .row {
+    display: flex; align-items: baseline; gap: 10px; padding: 7px 10px; border-radius: 6px;
+    color: var(--muted); text-decoration: none; cursor: pointer;
+  }
+  .row:hover { background: var(--hover); }
+  .row .fname { color: var(--link); white-space: nowrap; }
+  .row .fdesc { color: var(--faint); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row .go { margin-left: auto; color: var(--faint); font-size: 12px; flex: 0 0 auto; }
+  .row:hover .go { color: var(--accent); }
+  a.row { color: inherit; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 20px; }
+  .chip { font-size: 12px; color: var(--accent); border: 1px solid var(--border); background: var(--bg2); padding: 3px 10px; border-radius: 20px; }
+  .repo-link {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 6px;
+    color: var(--link); text-decoration: none; font-size: 13.5px; padding: 8px 14px;
+    border: 1px solid var(--border); border-radius: 6px; background: var(--bg2);
+  }
+  .repo-link:hover { background: var(--hover); }
+  .meta { font-size: 12.5px; color: var(--faint); margin-top: 22px; }
+  .meta b { color: var(--muted); font-weight: 400; }
+
+  .theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 14px; max-width: 640px; }
+  .theme-card {
+    border: 1px solid var(--border); border-radius: 8px; padding: 12px; cursor: pointer; background: var(--bg2);
+  }
+  .theme-card:hover { border-color: var(--accent); }
+  .theme-card.current { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .theme-card .sw { display: flex; gap: 4px; margin-bottom: 8px; }
+  .theme-card .sw i { width: 22px; height: 22px; border-radius: 4px; display: block; }
+  .theme-card .nm { font-size: 12.5px; color: var(--fg); }
+
+  /* ---------- status bar ---------- */
+  .statusbar {
+    flex: 0 0 26px; background: var(--status-bg); color: var(--status-fg);
+    display: flex; align-items: center; font-size: 12px; padding: 0 12px; gap: 16px; user-select: none;
+  }
+  .statusbar .right { margin-left: auto; display: flex; gap: 16px; }
+  .statusbar span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+
+  /* ---------- simple view ---------- */
+  #simple { display: none; height: 100vh; height: 100dvh; overflow-y: auto; background: var(--bg); color: var(--fg); }
+  #simple.on { display: block; }
+  #ide.hidden { display: none; }
+  .sheet { max-width: 720px; margin: 0 auto; padding: 48px 28px 80px; }
+  .sheet h1 { font-size: 32px; margin-bottom: 6px; }
+  .sheet h1 .accent { color: var(--accent); }
+  .sheet h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 2px; color: var(--faint); margin: 34px 0 12px; }
+  .sheet p, .sheet li { color: var(--muted); }
+  .sheet ul { padding-left: 20px; }
+  .sheet li { margin-bottom: 10px; }
+  .sheet a { color: var(--link); }
+  .sheet .back { display: inline-block; margin-bottom: 26px; color: var(--muted); cursor: pointer; font-size: 13px; }
+  .sheet .back:hover { color: var(--fg); }
+  @media print { .sheet .back, .titlebar { display: none; } }
+
+  @media (max-width: 760px) {
+    .sidebar { position: fixed; z-index: 40; height: calc(100% - 64px); top: 38px; left: 48px; transform: translateX(-110%); transition: transform .2s; box-shadow: 8px 0 24px rgba(0,0,0,.35); }
+    .sidebar.open { transform: none; }
+    .pane { padding: 20px 18px 60px; }
+    h1.hero { font-size: 24px; }
+    .row .fdesc { display: none; }
+  }
+</style>
+</head>
+<body data-theme="midnight">
+
+<div id="ide">
+  <div class="titlebar">
+    <div class="traffic"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+    <div class="title"><b>Rishabh Bohra</b> · mystic.code — portfolio</div>
+    <button class="simple-btn" id="simpleBtn" title="Plain printable view">Simple view</button>
+  </div>
+
+  <div class="workbench">
+    <div class="activitybar">
+      <button class="act active" data-act="files" title="Explorer">🗂<span class="tip">Explorer</span></button>
+      <button class="act" data-act="run" title="Run the sim">▶<span class="tip">Run the sim</span></button>
+      <button class="act" data-act="themes" title="Themes">🎨<span class="tip">Themes</span></button>
+      <button class="act" data-act="simple" title="Simple view">🖨<span class="tip">Simple view</span></button>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+      <div class="side-head">Explorer</div>
+      <div class="tree" id="tree"></div>
+      <div class="side-head">Outline</div>
+      <div class="tree">
+        <div class="tfile" data-open="themes"><span class="dot" style="background:var(--purple)"></span>settings.json<span class="ext">themes</span></div>
+      </div>
+    </div>
+
+    <div class="editor">
+      <div class="tabs" id="tabs"></div>
+      <div class="panes" id="panes"></div>
+    </div>
+  </div>
+
+  <div class="statusbar">
+    <span>⎇ main</span><span>✓ 0 ⚠ 0</span>
+    <span class="right"><span id="themeName">Midnight</span><span>mystic.code</span></span>
+  </div>
+</div>
+
+<div id="simple">
+  <div class="sheet">
+    <span class="back" id="backBtn">← back to IDE view</span>
+    <h1>Rishabh Bohra <span class="accent">·</span></h1>
+    <p class="tagline">B.Tech undergrad at IET DAVV · Embedded / Mobile / Security</p>
+    <p>I build things and break things to understand them. Microcontrollers, Flutter apps shipped to real users, and Android apps taken apart for security research.</p>
+
+    <h2>Contact</h2>
+    <ul>
+      <li>Email: <a href="mailto:mrmysticuniverse@gmail.com">mrmysticuniverse@gmail.com</a></li>
+      <li>GitHub: <a href="https://github.com/sudo-Mystic">github.com/sudo-Mystic</a></li>
+      <li>LinkedIn: <a href="https://www.linkedin.com/in/rishabh-b-90303b245">linkedin.com/in/rishabh-b-90303b245</a></li>
+    </ul>
+
+    <h2>Projects</h2>
+    <ul>
+      <li><b>Scoot</b> — Flutter companion app for TVS smart scooters. Live telemetry, trip history, turn-by-turn navigation mirrored to the cluster, media and call controls over BLE. Protocol fully reverse-engineered from the official app. Shipped to real users, audited every release. <a href="https://github.com/sudo-Mystic/Scoot">repo</a></li>
+      <li><b>detroit-jev</b> — an engine that plays Detroit: Become Human start to finish, with an AI making all 226 story decisions live through a real game backend. <a href="https://github.com/sudo-Mystic/detroit-jev">repo</a></li>
+      <li><b>esp-reddit</b> — Reddit API wrapper for ESP32. OAuth2, rate limiting, 39 unit tests, all examples compiling for real hardware. <a href="https://github.com/sudo-Mystic/esp-reddit">repo</a></li>
+      <li><b>exam-eval-platform</b> — AI examination evaluation platform. Next.js, Gemini-powered grading pipeline, rubric workflows. <a href="https://github.com/sudo-Mystic/exam-eval-platform">repo</a></li>
+      <li><b>Android security research</b> — static and dynamic teardown of popular Indian consumer apps. Real findings, disclosed through proper channels. Assume breach, verify everything.</li>
+    </ul>
+
+    <h2>Elsewhere</h2>
+    <ul>
+      <li>home-assistant/core contributor — heater-cooler fix for the HomeKit controller integration.</li>
+      <li>Try the <a href="https://sudo-mystic.github.io/Scoot-releases/sim/">Jupiter cluster simulator</a> in your browser.</li>
+    </ul>
+
+    <p class="quote" style="margin-top:34px">"If it runs code, it can be understood. If it can be understood, it can be improved. Or broken."</p>
+  </div>
+</div>
+
+<script>
+const FILES = {
+  "README.md": {
+    icon: "#4fc1ff", group: "root", tab: "README.md",
+    html: `
+      <div class="crumb">portfolio <b>›</b> README.md</div>
+      <h1 class="hero">Rishabh Bohra <span class="accent">·</span></h1>
+      <div class="tagline">B.Tech undergrad at IET DAVV<span class="sep">·</span>Embedded<span class="sep">/</span>Mobile<span class="sep">/</span>Security</div>
+      <p class="bio">I build things and break things to understand them. Microcontrollers, Flutter apps shipped to real users, and Android apps taken apart for security research.</p>
+      <div class="quote">"If it runs code, it can be understood. If it can be understood, it can be improved. Or broken."</div>
+
+      <h2 class="sec">Start</h2>
+      <a class="row" data-open="scoot.dart"><span class="fname">▸ Open a project</span><span class="fdesc">pick anything under projects/</span><span class="go">→</span></a>
+      <a class="row" id="runSimRow"><span class="fname">▸ Run the sim</span><span class="fdesc">Jupiter cluster simulator, live in your browser</span><span class="go">↗</span></a>
+      <a class="row" href="mailto:mrmysticuniverse@gmail.com"><span class="fname">✉ mrmysticuniverse@gmail.com</span><span class="go">↗</span></a>
+      <a class="row" href="https://github.com/sudo-Mystic" target="_blank" rel="noopener"><span class="fname">◈ GitHub</span><span class="fdesc">github.com/sudo-Mystic</span><span class="go">↗</span></a>
+      <a class="row" href="https://www.linkedin.com/in/rishabh-b-90303b245" target="_blank" rel="noopener"><span class="fname">◈ LinkedIn</span><span class="fdesc">C/C++ · Embedded · Linux · CyberSec</span><span class="go">↗</span></a>
+
+      <h2 class="sec">Recent</h2>
+      <a class="row" data-open="scoot.dart"><span class="fname">scoot.dart</span><span class="fdesc">Flutter companion app for TVS smart scooters</span><span class="go">→</span></a>
+      <a class="row" data-open="detroit_jev.py"><span class="fname">detroit_jev.py</span><span class="fdesc">AI plays Detroit: Become Human, all 226 decisions</span><span class="go">→</span></a>
+      <a class="row" data-open="esp_reddit.cpp"><span class="fname">esp_reddit.cpp</span><span class="fdesc">Reddit API wrapper for ESP32</span><span class="go">→</span></a>
+      <a class="row" data-open="exam_eval.md"><span class="fname">exam_eval.md</span><span class="fdesc">AI examination evaluation platform</span><span class="go">→</span></a>
+      <a class="row" data-open="android_research.md"><span class="fname">android_research.md</span><span class="fdesc">Teardown of Indian consumer apps, disclosed properly</span><span class="go">→</span></a>
+
+      <h2 class="sec">Walkthroughs</h2>
+      <a class="row" id="runSimRow2"><span class="fname"><b>Run the sim</b></span><span class="fdesc">drive a virtual Jupiter cluster from your browser</span><span class="go">↗</span></a>
+      <a class="row" data-open="themes"><span class="fname"><b>Make it yours</b></span><span class="fdesc">4 editor themes — pick one, it sticks</span><span class="go">→</span></a>
+    `
+  },
+  "scoot.dart": {
+    icon: "#4fc1ff", group: "projects", tab: "scoot.dart",
+    html: `
+      <div class="crumb">portfolio <b>›</b> projects <b>›</b> scoot.dart</div>
+      <h1 class="hero">Scoot</h1>
+      <div class="tagline">shipped · audited every release</div>
+      <p class="bio">Companion app for TVS smart scooters. Live telemetry, trip history, turn-by-turn navigation mirrored to the instrument cluster, media and call controls, all over BLE. The entire cluster protocol was reverse-engineered from the official app and JRC docs.</p>
+      <div class="chips"><span class="chip">Flutter</span><span class="chip">Dart</span><span class="chip">BLE</span><span class="chip">Reverse engineering</span></div>
+      <a class="repo-link" href="https://github.com/sudo-Mystic/Scoot" target="_blank" rel="noopener">Open repository ↗</a>
+      <div class="meta"><b>status</b> · in active development, real users on the road</div>
+    `
+  },
+  "detroit_jev.py": {
+    icon: "#4ec9b0", group: "projects", tab: "detroit_jev.py",
+    html: `
+      <div class="crumb">portfolio <b>›</b> projects <b>›</b> detroit_jev.py</div>
+      <h1 class="hero">detroit-jev</h1>
+      <div class="tagline">experiment · agents</div>
+      <p class="bio">An engine that plays Detroit: Become Human start to finish, with an AI making all 226 story decisions live through a real game backend. Every choice, every consequence, no human hands.</p>
+      <div class="chips"><span class="chip">Python</span><span class="chip">LLM agents</span><span class="chip">Game automation</span></div>
+      <a class="repo-link" href="https://github.com/sudo-Mystic/detroit-jev" target="_blank" rel="noopener">Open repository ↗</a>
+      <div class="meta"><b>status</b> · deep in the build</div>
+    `
+  },
+  "esp_reddit.cpp": {
+    icon: "#c586c0", group: "projects", tab: "esp_reddit.cpp",
+    html: `
+      <div class="crumb">portfolio <b>›</b> projects <b>›</b> esp_reddit.cpp</div>
+      <h1 class="hero">esp-reddit</h1>
+      <div class="tagline">library · 39 unit tests passing</div>
+      <p class="bio">A Reddit API wrapper for the ESP32, built from scratch. OAuth2 with auto re-auth, listings with pagination, comments, voting, posting, client-side rate limiting, and a curated TLS root set. Host-testable core, every example compiling for real hardware.</p>
+      <div class="chips"><span class="chip">C++</span><span class="chip">ESP32</span><span class="chip">ArduinoJson</span><span class="chip">TLS</span></div>
+      <a class="repo-link" href="https://github.com/sudo-Mystic/esp-reddit" target="_blank" rel="noopener">Open repository ↗</a>
+      <div class="meta"><b>status</b> · usable via lib_deps today</div>
+    `
+  },
+  "exam_eval.md": {
+    icon: "#dcdcaa", group: "projects", tab: "exam_eval.md",
+    html: `
+      <div class="crumb">portfolio <b>›</b> projects <b>›</b> exam_eval.md</div>
+      <h1 class="hero">exam-eval-platform</h1>
+      <div class="tagline">full stack · AI pipeline</div>
+      <p class="bio">AI examination evaluation platform. Paper ingestion, rubric workflows, and a Gemini-powered grading pipeline with deterministic checks, wrapped in a Next.js app with Postgres job queues.</p>
+      <div class="chips"><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">Postgres</span><span class="chip">Gemini</span></div>
+      <a class="repo-link" href="https://github.com/sudo-Mystic/exam-eval-platform" target="_blank" rel="noopener">Open repository ↗</a>
+      <div class="meta"><b>status</b> · built and green</div>
+    `
+  },
+  "android_research.md": {
+    icon: "#ce9178", group: "projects", tab: "android_research.md",
+    html: `
+      <div class="crumb">portfolio <b>›</b> projects <b>›</b> android_research.md</div>
+      <h1 class="hero">Android security research</h1>
+      <div class="tagline">ongoing · responsible disclosure</div>
+      <p class="bio">Static and dynamic teardown of popular Indian consumer apps. Real findings, disclosed through proper channels only. Assume breach, verify everything.</p>
+      <div class="chips"><span class="chip">Reverse engineering</span><span class="chip">Mobile security</span><span class="chip">Bug bounty</span></div>
+      <div class="meta"><b>status</b> · pipeline running — Swiggy acknowledged, Zomato in review</div>
+    `
+  },
+  "themes": {
+    icon: "#b48cf2", group: "root", tab: "settings.json",
+    html: `
+      <div class="crumb">portfolio <b>›</b> settings.json</div>
+      <h1 class="hero">Make it yours</h1>
+      <p class="bio">Four editor themes. Pick one, it sticks around for your next visit.</p>
+      <div class="theme-grid" id="themeGrid"></div>
+    `
+  }
+};
+
+const THEMES = [
+  { id: "midnight", name: "Midnight", colors: ["#1e1e1e", "#4ec9b0", "#4fc1ff", "#c586c0"] },
+  { id: "forest",   name: "Forest",   colors: ["#101a14", "#7dd87d", "#8fd6a4", "#e3d27d"] },
+  { id: "ember",    name: "Ember",    colors: ["#1f1611", "#e8935c", "#f0d35c", "#d69ac0"] },
+  { id: "grape",    name: "Grape",    colors: ["#1b1426", "#b48cf2", "#9ab8f2", "#e3a47f"] },
+];
+const SIM_URL = "https://sudo-mystic.github.io/Scoot-releases/sim/";
+
+const GROUPS = [["root", "PORTFOLIO"], ["projects", "PROJECTS"]];
+const tree = document.getElementById("tree");
+const tabsEl = document.getElementById("tabs");
+const panesEl = document.getElementById("panes");
+const openTabs = [];
+let activeTab = null;
+
+function buildTree() {
+  tree.innerHTML = "";
+  for (const [gkey, glabel] of GROUPS) {
+    const g = document.createElement("div");
+    g.className = "tgroup"; g.textContent = glabel;
+    tree.appendChild(g);
+    for (const [key, f] of Object.entries(FILES)) {
+      if (f.group !== gkey || key === "themes") continue;
+      const el = document.createElement("div");
+      el.className = "tfile"; el.dataset.open = key;
+      el.innerHTML = `<span class="dot" style="background:${f.icon}"></span>${f.tab}`;
+      el.onclick = () => openTab(key);
+      tree.appendChild(el);
+    }
+  }
+}
+
+function openTab(key) {
+  if (!openTabs.includes(key)) {
+    openTabs.push(key);
+    const t = document.createElement("div");
+    t.className = "tab"; t.dataset.tab = key;
+    t.innerHTML = `<span class="dot" style="background:${FILES[key].icon}"></span>${FILES[key].tab}<span class="x" title="Close">×</span>`;
+    t.onclick = (e) => {
+      if (e.target.classList.contains("x")) { closeTab(key); e.stopPropagation(); return; }
+      activateTab(key);
+    };
+    tabsEl.appendChild(t);
+    const p = document.createElement("div");
+    p.className = "pane"; p.dataset.pane = key; p.innerHTML = FILES[key].html;
+    panesEl.appendChild(p);
+    wirePane(p);
+  }
+  activateTab(key);
+  if (window.innerWidth <= 760) document.getElementById("sidebar").classList.remove("open");
+}
+
+function activateTab(key) {
+  activeTab = key;
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === key));
+  document.querySelectorAll(".pane").forEach(p => p.classList.toggle("active", p.dataset.pane === key));
+  document.querySelectorAll(".tfile").forEach(f => f.classList.toggle("active", f.dataset.open === key));
+  document.querySelector(".panes").scrollTop = 0;
+}
+
+function closeTab(key) {
+  const i = openTabs.indexOf(key);
+  if (i > -1) openTabs.splice(i, 1);
+  tabsEl.querySelector(`[data-tab="${key}"]`)?.remove();
+  panesEl.querySelector(`[data-pane="${key}"]`)?.remove();
+  if (activeTab === key && openTabs.length) activateTab(openTabs[openTabs.length - 1]);
+}
+
+function wirePane(pane) {
+  pane.querySelectorAll("[data-open]").forEach(el => {
+    el.addEventListener("click", (e) => { e.preventDefault(); openTab(el.dataset.open); });
+  });
+  pane.querySelectorAll("#runSimRow, #runSimRow2").forEach(el => {
+    el.addEventListener("click", (e) => { e.preventDefault(); window.open(SIM_URL, "_blank", "noopener"); });
+  });
+  if (pane.querySelector("#themeGrid")) renderThemes(pane.querySelector("#themeGrid"));
+}
+
+function renderThemes(grid) {
+  grid.innerHTML = "";
+  const cur = document.body.dataset.theme;
+  THEMES.forEach(t => {
+    const c = document.createElement("div");
+    c.className = "theme-card" + (t.id === cur ? " current" : "");
+    c.innerHTML = `<div class="sw">${t.colors.map(col => `<i style="background:${col}"></i>`).join("")}</div><div class="nm">${t.name}</div>`;
+    c.onclick = () => setTheme(t.id);
+    grid.appendChild(c);
+  });
+}
+
+function setTheme(id) {
+  document.body.dataset.theme = id;
+  try { localStorage.setItem("mystic-theme", id); } catch (e) {}
+  const t = THEMES.find(x => x.id === id);
+  document.getElementById("themeName").textContent = t ? t.name : id;
+  document.querySelectorAll("#themeGrid").forEach(renderThemes);
+}
+
+// activity bar
+document.querySelectorAll(".act").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const act = btn.dataset.act;
+    document.querySelectorAll(".act").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    if (act === "files") document.getElementById("sidebar").classList.toggle("open");
+    else if (act === "run") window.open(SIM_URL, "_blank", "noopener");
+    else if (act === "themes") openTab("themes");
+    else if (act === "simple") showSimple(true);
+  });
+});
+
+function showSimple(on) {
+  document.getElementById("simple").classList.toggle("on", on);
+  document.getElementById("ide").classList.toggle("hidden", on);
+  window.scrollTo(0, 0);
+}
+document.getElementById("simpleBtn").onclick = () => showSimple(true);
+document.getElementById("backBtn").onclick = () => showSimple(false);
+
+// init
+(function init() {
+  let saved = null;
+  try { saved = localStorage.getItem("mystic-theme"); } catch (e) {}
+  if (saved && THEMES.some(t => t.id === saved)) setTheme(saved);
+  else setTheme("midnight");
+  buildTree();
+  openTab("README.md");
+})();
+</script>
+</body>
+</html>
