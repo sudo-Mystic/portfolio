@@ -94,8 +94,10 @@ sub('<h1 class="text-4xl font-light tracking-tight text-tab-active-fg max-md:tex
     '<h1 class="text-4xl font-light tracking-tight text-tab-active-fg max-md:text-3xl">Rishabh Bohra</h1>')
 sub('B.Tech Chemical Engineering · ML / Scientific Computing',
     'B.Tech undergrad at IET DAVV · Embedded / Mobile / Security')
+# NB: count covers og:description, twitter:description, JSON-LD and the visible bio paragraph
 sub('Chemical Engineering undergrad at IIT (ISM) Dhanbad working on Machine Learning and Scientific Computing.',
-    'I build things and break things to understand them. Microcontrollers, Flutter apps shipped to real users, and Android apps taken apart for security research.')
+    'I build things and break things to understand them. Microcontrollers, Flutter apps shipped to real users, and Android apps taken apart for security research.',
+    10)
 
 # ---- boot lines ----
 sub('maaz.code: booting', 'mystic.code: booting')
@@ -137,15 +139,14 @@ recent = [
      'exam_eval.md', 'AI examination evaluation platform', '@root/projects/exam-eval/'),
 ]
 # churn_predictor name/desc handled separately (href done positionally above)
-sub('>churn_predictor.py<', '>detroit_jev.py<')
+sub('>churn_predictor.py<', '>detroit_jev.py<', 10)
 sub('E-Commerce Customer Churn Prediction', 'AI plays Detroit: Become Human, all 226 decisions')
 for old_name, old_desc, old_href, new_name, new_desc, new_href in recent:
-    sub(f'>{old_name}<', f'>{new_name}<')
+    sub(f'>{old_name}<', f'>{new_name}<', 10)
     sub(old_desc, new_desc)
     sub(f'href="{old_href}"', f'href="{new_href}"')
-# notebook icon for heat_pinn -> keep as file-code (cpp); swap icon class
-sub('codicon-notebook text-syntax-string " aria-hidden="true"></span><span class="truncate ">esp_reddit.cpp',
-    'codicon-file-code text-syntax-function " aria-hidden="true"></span><span class="truncate ">esp_reddit.cpp')
+# notebook icon for heat_pinn -> file-code (no .ipynb files remain after the rename)
+sub('codicon-notebook text-syntax-string ', 'codicon-file-code text-syntax-function ', 10)
 
 # ---- walkthroughs ----
 sub('Run the research', 'Run the sim')
