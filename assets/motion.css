@@ -1,0 +1,211 @@
+/* The graphic is part of the open document. Editor chrome stays in place. */
+main { container: document-pane / inline-size; }
+.document-hero { display: grid; align-items: center; gap: 1.3rem; }
+.editor-js .document-hero:has(.motion-study) { grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); }
+.editor-js .motion-study[hidden] { display: block !important; visibility: hidden; }
+.document-hero > :first-child { min-width: 0; }
+.document-hero .welcome-intro { align-items: flex-start; }
+.document-hero .welcome-intro img { width: clamp(2.4rem, 4.2cqw, 3.1rem); }
+.document-hero .welcome-intro h1 { font-size: clamp(2.1rem, 4.2cqw, 3.05rem); }
+.document-hero .document-intro { max-width: 37ch; }
+.project-document .document-hero h1 { font-size: clamp(2.2rem, 6cqw, 3.45rem); }
+
+.motion-study {
+  --corner: color-mix(in srgb, var(--accent) 57%, var(--line));
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  aspect-ratio: 2 / 1;
+  width: 100%;
+  min-width: 0;
+  border-radius: 2px;
+  background:
+    radial-gradient(ellipse at 53% 60%, color-mix(in srgb, var(--accent) 5%, transparent), transparent 70%),
+    radial-gradient(color-mix(in srgb, var(--accent) 16%, transparent) .65px, transparent .85px) center / 12px 12px,
+    var(--panel);
+}
+.motion-study::before {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(var(--corner), var(--corner)) top left / 12px 1px,
+    linear-gradient(var(--corner), var(--corner)) top left / 1px 12px,
+    linear-gradient(var(--corner), var(--corner)) top right / 12px 1px,
+    linear-gradient(var(--corner), var(--corner)) top right / 1px 12px,
+    linear-gradient(var(--corner), var(--corner)) bottom left / 12px 1px,
+    linear-gradient(var(--corner), var(--corner)) bottom left / 1px 12px,
+    linear-gradient(var(--corner), var(--corner)) bottom right / 12px 1px,
+    linear-gradient(var(--corner), var(--corner)) bottom right / 1px 12px;
+  background-repeat: no-repeat;
+}
+.motion-study canvas { display: block; width: 100%; height: 100%; }
+.replay-study {
+  position: absolute;
+  z-index: 2;
+  right: .35rem;
+  bottom: .35rem;
+  display: grid;
+  place-items: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 3px;
+  color: var(--quiet);
+  background: var(--panel);
+}
+.replay-study:hover, .replay-study:focus-visible { color: var(--accent); background: var(--hover); }
+.replay-study > span {
+  position: relative;
+  width: .82rem;
+  height: .82rem;
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  transform: rotate(-32deg);
+}
+.replay-study > span::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: -.06rem;
+  width: .29rem;
+  height: .29rem;
+  border-right: 1.5px solid;
+  border-bottom: 1.5px solid;
+  transform: rotate(8deg);
+}
+.motion-options { margin: 1.45rem 0 0; padding: 0; border: 0; }
+.motion-options legend { font-weight: 600; }
+.motion-options label { display: inline-flex; align-items: center; min-height: 2.6rem; gap: .55rem; cursor: pointer; }
+.motion-options input { margin: 0; accent-color: var(--accent); }
+
+@container document-pane (max-width: 38rem) {
+  .editor-js .document-hero:has(.motion-study) { grid-template-columns: 1fr; gap: 1.05rem; }
+  .document-hero .motion-study { width: min(100%, 28rem); justify-self: start; }
+}
+@container document-pane (max-width: 24rem) {
+  .document-hero .welcome-intro h1 { font-size: clamp(1.8rem, 8.7cqw, 2.1rem); }
+}
+
+@keyframes file-in {
+  from { opacity: .3; transform: translateY(7px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes file-out {
+  to { opacity: 0; transform: translateY(-4px); }
+}
+@keyframes document-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes panel-in {
+  from { opacity: .58; transform: translateY(13px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes palette-in {
+  from { opacity: .45; transform: translateY(-7px) scale(.988); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes illuminate {
+  from { transform: scaleX(.03); }
+  to { transform: scaleX(1); }
+}
+@keyframes sidebar-in {
+  from { opacity: .6; transform: translateX(-7px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+
+  :root:not([data-motion="reduce"]) {
+    --settle: cubic-bezier(.16,.76,.18,1);
+    view-transition-name: none;
+  }
+  :root:not([data-motion="reduce"]) main { view-transition-name: editor-content; }
+  :root:not([data-motion="reduce"]) .editor-tab:has(.tab-marker) { box-shadow: none; }
+  :root:not([data-motion="reduce"]) .tab-marker {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: var(--accent);
+    pointer-events: none;
+    view-transition-name: active-editor-tab;
+  }
+  :root:not([data-motion="reduce"]) .motion-study:not([hidden]) {
+    view-transition-name: var(--study-transition, none);
+    view-transition-class: project-art;
+  }
+
+  ::view-transition { pointer-events: none; }
+  ::view-transition-group(editor-content), ::view-transition-group(active-editor-tab) {
+    animation-duration: 220ms;
+    animation-timing-function: cubic-bezier(.16,.76,.18,1);
+  }
+  ::view-transition-old(editor-content) { animation: file-out 78ms ease-out both; }
+  ::view-transition-new(editor-content) { animation: document-in 155ms cubic-bezier(.16,.76,.18,1) 72ms both; }
+  ::view-transition-group(.project-art) {
+    animation-duration: 330ms;
+    animation-timing-function: cubic-bezier(.22,.76,.2,1);
+  }
+
+  :root:not([data-motion="reduce"]) .welcome-intro,
+  :root:not([data-motion="reduce"]) .project-document header { animation: file-in 310ms var(--settle) both; }
+  :root:not([data-motion="reduce"]) .project-list li {
+    animation: file-in 280ms var(--settle) both;
+    animation-delay: calc(35ms + var(--order, 0) * 36ms);
+  }
+  .project-list li:nth-child(2) { --order: 1; }
+  .project-list li:nth-child(3) { --order: 2; }
+  .project-list li:nth-child(4) { --order: 3; }
+
+  :root:not([data-motion="reduce"]) .project-list a { position: relative; }
+  :root:not([data-motion="reduce"]) .project-list a::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 -1px;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 220ms var(--settle);
+    pointer-events: none;
+  }
+  :root:not([data-motion="reduce"]) .project-list a:is(:hover,:focus-visible)::after { transform: scaleX(1); }
+  :root:not([data-motion="reduce"]) :is(.project-list a, .activity-item, .start-list a, .start-list button) .icon {
+    transition: transform 160ms var(--settle), color 160ms ease;
+  }
+  :root:not([data-motion="reduce"]) .project-list a:is(:hover,:focus-visible) .icon { transform: translateY(-2px); }
+  :root:not([data-motion="reduce"]) :is(.activity-item,.start-list a,.start-list button):active .icon { transform: scale(.89); }
+  :root:not([data-motion="reduce"]) .folder .disclosure { transition: rotate 135ms var(--settle); }
+  :root:not([data-motion="reduce"]) .mobile-explorer,
+  :root:not([data-motion="reduce"]) .file-link,
+  :root:not([data-motion="reduce"]) .theme-option { transition: background-color 130ms ease, color 130ms ease, border-color 140ms ease; }
+  :root:not([data-motion="reduce"]) .workspace[data-mobile-explorer="open"] .explorer { animation: sidebar-in 165ms var(--settle); }
+  :root:not([data-motion="reduce"]) #jump-dialog[open] { animation: palette-in 175ms var(--settle); }
+  :root:not([data-motion="reduce"]) .terminal:not([hidden]) { animation: panel-in 220ms var(--settle); }
+  :root:not([data-motion="reduce"]) .terminal:not([hidden]) h2 { position: relative; }
+  :root:not([data-motion="reduce"]) .terminal:not([hidden]) h2::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 -.35rem;
+    height: 1px;
+    background: var(--accent);
+    transform-origin: left;
+    animation: illuminate 250ms var(--settle);
+  }
+  :root:not([data-motion="reduce"]) .terminal-log p { animation: file-in 145ms var(--settle); }
+
+  @media (hover: hover) and (pointer: fine) {
+    :root:not([data-motion="reduce"]) .motion-study canvas {
+      transform: perspective(650px) rotateX(var(--pitch,0deg)) rotateY(var(--yaw,0deg));
+      transition: transform 180ms ease-out;
+    }
+  }
+}
+:root[data-motion="reduce"] { view-transition-name: none; }
+:root[data-motion="reduce"]::view-transition-group(*),
+:root[data-motion="reduce"]::view-transition-old(*),
+:root[data-motion="reduce"]::view-transition-new(*) { animation: none; }
