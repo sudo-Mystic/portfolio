@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>esp-reddit · Rishabh Bohra</title>
-<meta name="description" content="A C++ Reddit API client for ESP32 that works within the memory limits of a microcontroller.">
+<meta name="description" content="A lightweight C++ Reddit API client for ESP32.">
 <meta name="author" content="Rishabh Bohra">
 <link rel="canonical" href="https://sudo-mystic.github.io/portfolio/projects/esp-reddit/">
 <link rel="icon" href="../../logo-64.webp" type="image/webp">
@@ -12,92 +12,120 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Rishabh Bohra">
 <meta property="og:title" content="esp-reddit · Rishabh Bohra">
-<meta property="og:description" content="A C++ Reddit API client for ESP32 that works within the memory limits of a microcontroller.">
+<meta property="og:description" content="A lightweight C++ Reddit API client for ESP32.">
 <meta property="og:url" content="https://sudo-mystic.github.io/portfolio/projects/esp-reddit/">
 <meta property="og:image" content="https://sudo-mystic.github.io/portfolio/assets/share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Rishabh Bohra, independent developer">
+<meta property="og:image:alt" content="Rishabh Bohra’s mystic.code portfolio">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="esp-reddit · Rishabh Bohra">
-<meta name="twitter:description" content="A C++ Reddit API client for ESP32 that works within the memory limits of a microcontroller.">
+<meta name="twitter:description" content="A lightweight C++ Reddit API client for ESP32.">
 <meta name="twitter:image" content="https://sudo-mystic.github.io/portfolio/assets/share.jpg">
 <script src="../../assets/theme.js"></script>
 <link rel="stylesheet" href="../../assets/site.css">
 <script src="../../assets/site.js" defer></script>
 </head>
-<body>
-<a class="skip-link" href="#main">Skip to content</a>
-<header class="site-header">
-  <div class="wrap header-inner">
-    <a class="brand" href="../../" aria-label="Rishabh Bohra, home"><span class="brand-mark" aria-hidden="true">rb<span>.</span></span><span>Rishabh Bohra</span></a>
-    <nav aria-label="Main navigation">
-      <a href="../../#work">Work</a>
-      <a href="../../readme/">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <button class="jump-trigger" type="button" aria-haspopup="dialog" aria-controls="jump-dialog" hidden>
-      <span class="search-icon" aria-hidden="true"></span><span class="jump-label">Jump to</span><kbd aria-hidden="true">⌘ K</kbd>
-    </button>
-  </div>
-</header>
-<main id="main" tabindex="-1">
+<body data-current-file="esp-reddit">
+<a class="skip-link" href="#main">Skip to editor</a>
 
-<article class="wrap article">
-  <a class="back-link" href="../../#work">Back to selected work</a>
-  <header class="article-header">
-    <p class="eyebrow">Embedded / Open source <span class="separator">/</span> Public library</p>
-    <h1>esp-reddit<span class="name-period">.</span></h1>
-    <p class="article-intro">A C++ Reddit API client for ESP32 that works within the memory limits of a microcontroller.</p>
-    <ul class="tags" aria-label="Technologies"><li>ESP32</li><li>C++</li><li>ArduinoJson</li></ul>
-<div class="actions"><a class="button button-primary" href="https://github.com/sudo-Mystic/esp-reddit">View source</a></div>
-  </header>
-
-<figure class="case-board">
-  <figcaption>How the client keeps memory use down</figcaption>
-  <ol class="pipeline">
-    <li><strong>Request</strong><span>Cap the page size</span></li>
-    <li><strong>Parse</strong><span>Stream the JSON response</span></li>
-    <li><strong>Return</strong><span>Keep the requested fields</span></li>
-  </ol>
-</figure>
-  <div class="article-body"><section><h2>Keep the response small</h2><p>The client fetches listings and comment trees, with OAuth token refresh and rate-limit backoff. Streaming JSON parsing, field filters and page-size limits keep large responses from consuming more memory than the ESP32 can spare.</p></section><section><h2>Separate HTTP from the board</h2><p>The ESP32 network transport handles the hardware-specific work. The rest of the library can run on a host, which makes it possible to test pagination, token refresh and rate-limit behavior without flashing a board.</p></section><section><h2>Start with a listing</h2><p>The repository includes a PlatformIO setup and examples for reading a feed, authenticating and working with posts and comments.</p></section></div>
-  <a class="next-project" href="../../projects/exam-eval/">
-    <span class="eyebrow">Next project</span>
-    <strong>Exam Evaluation</strong>
+<header class="titlebar">
+  <a class="brand" href="../../" aria-label="mystic.code, home">
+    <img src="../../logo-64.webp" width="24" height="24" alt="">
+    <span>mystic<span class="brand-period">.</span>code</span>
   </a>
-</article>
-</main>
+  <button class="quick-open" type="button" data-jump aria-label="Search files" aria-haspopup="dialog" aria-controls="jump-dialog" hidden>
+    <span class="icon" aria-hidden="true">&#xea6d;</span><span>Search files</span><kbd aria-hidden="true">Ctrl K</kbd>
+  </button>
+  <a class="title-github" aria-label="GitHub" href="https://github.com/sudo-Mystic"><span class="icon" aria-hidden="true">&#xea84;</span><span>GitHub</span></a>
+</header>
+<div class="workspace">
 
-<footer class="site-footer" id="contact">
-  <div class="wrap">
-    <div class="footer-main">
-      <div><h2>Get in touch<span class="name-period">.</span></h2>
-      <a class="footer-email" href="mailto:mrmysticuniverse@gmail.com">mrmysticuniverse@gmail.com</a></div>
-      <ul class="footer-profiles"><li><a href="https://github.com/sudo-Mystic">GitHub</a></li><li><a href="https://www.linkedin.com/in/rishabh-b-90303b245">LinkedIn</a></li></ul>
-    </div>
-    <div class="footer-bottom"><span>© Rishabh Bohra</span>
-      <ul><li><a href="../../simple/">Simple view</a></li><li><a href="../../settings/">Appearance</a></li></ul>
-    </div>
-  </div>
+<nav class="activitybar" aria-label="Editor tools">
+  <button class="activity-item" type="button" data-explorer aria-label="Toggle Explorer" aria-expanded="true" aria-controls="explorer" title="Explorer" hidden><span class="icon" aria-hidden="true">&#xeaf0;</span></button>
+  <button class="activity-item" type="button" data-jump aria-label="Search files" aria-haspopup="dialog" aria-controls="jump-dialog" title="Search files" hidden><span class="icon" aria-hidden="true">&#xea6d;</span></button>
+  <a class="activity-item" href="https://github.com/sudo-Mystic/portfolio" aria-label="Portfolio source" title="Portfolio source"><span class="icon" aria-hidden="true">&#xea68;</span></a>
+  <a class="activity-item activity-settings" href="../../settings/" aria-label="Settings" title="Settings"><span class="icon" aria-hidden="true">&#xeb51;</span></a>
+</nav>
+
+<aside class="explorer" id="explorer" aria-labelledby="explorer-title">
+  <div class="explorer-heading"><h2 id="explorer-title">Explorer</h2></div>
+  <details class="folder workspace-folder" open>
+    <summary><span class="icon disclosure" aria-hidden="true">&#xeab6;</span><strong>MYSTIC.CODE</strong></summary>
+    <nav aria-label="Files">
+      <ul class="file-tree">
+        <li><a class="file-link" href="../../" data-file-id="welcome" data-file-name="Welcome" data-file-intro="Mobile apps, embedded systems and applied AI."><span class="icon file-home" aria-hidden="true">&#xeb06;</span><span>Welcome</span></a></li>
+        <li><a class="file-link" href="../../readme/" data-file-id="readme" data-file-name="README.md" data-file-intro="Rishabh Bohra · B.Tech student at IET DAVV. Mobile apps, embedded systems and applied AI."><span class="icon file-markdown" aria-hidden="true">&#xeb1d;</span><span>README.md</span></a></li>
+        <li>
+          <details class="folder" open>
+            <summary><span class="icon disclosure" aria-hidden="true">&#xeab6;</span><span class="icon folder-icon" aria-hidden="true">&#xea83;</span>projects</summary>
+            <ul><li><a class="file-link" href="../../projects/scoot/" data-file-id="scoot" data-file-name="scoot.dart" data-file-intro="Android companion for compatible TVS SmartXonnect scooters."><span class="icon file-code" aria-hidden="true">&#xeae9;</span><span>scoot.dart</span></a></li>
+<li><a class="file-link" href="../../projects/esp-reddit/" aria-current="page" data-file-id="esp-reddit" data-file-name="esp_reddit.cpp" data-file-intro="A lightweight C++ Reddit API client for ESP32."><span class="icon file-code" aria-hidden="true">&#xeae9;</span><span>esp_reddit.cpp</span></a></li>
+<li><a class="file-link" href="../../projects/exam-eval/" data-file-id="exam-eval" data-file-name="exam_eval.md" data-file-intro="AI-assisted grading for handwritten exam papers, with faculty review."><span class="icon file-markdown" aria-hidden="true">&#xeb1d;</span><span>exam_eval.md</span></a></li>
+<li><a class="file-link" href="../../projects/detroit-jev/" data-file-id="detroit-jev" data-file-name="detroit_jev.py" data-file-intro="An experiment in how AI decisions hold together across a branching story."><span class="icon file-code" aria-hidden="true">&#xeae9;</span><span>detroit_jev.py</span></a></li></ul>
+          </details>
+        </li>
+        <li>
+          <details class="folder">
+            <summary><span class="icon disclosure" aria-hidden="true">&#xeab6;</span><span class="icon folder-icon" aria-hidden="true">&#xea83;</span>.vscode</summary>
+            <ul><li><a class="file-link" href="../../settings/" data-file-id="settings" data-file-name="settings.json" data-file-intro="Choose a color theme for the editor."><span class="icon file-json" aria-hidden="true">&#xeb0f;</span><span>settings.json</span></a></li></ul>
+          </details>
+        </li>
+      </ul>
+    </nav>
+  </details>
+</aside>
+  <div class="explorer-resizer" role="separator" aria-label="Explorer width" aria-controls="explorer"
+       aria-orientation="vertical" aria-valuemin="170" aria-valuemax="360" aria-valuenow="232" tabindex="0" hidden></div>
+  <section class="editor" aria-label="Editor">
+
+<div class="editor-tabs">
+  <button class="mobile-explorer" type="button" data-explorer aria-label="Toggle Explorer" aria-expanded="false" aria-controls="explorer" hidden><span class="icon" aria-hidden="true">&#xeaf0;</span></button>
+  <nav class="open-tabs" aria-label="Open editors" id="open-tabs"><div class="editor-tab"><a href="../../"><span class="icon file-home" aria-hidden="true">&#xeb06;</span>Welcome</a></div><div class="editor-tab"><a href="../../projects/esp-reddit/" aria-current="page"><span class="icon file-code" aria-hidden="true">&#xeae9;</span>esp_reddit.cpp</a></div></nav>
+</div>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <a href="../../">mystic.code</a><span class="icon" aria-hidden="true">&#xeab6;</span><a href="../../#work">projects</a><span class="icon" aria-hidden="true">&#xeab6;</span>
+  <span aria-current="page"><span class="icon file-code" aria-hidden="true">&#xeae9;</span>esp_reddit.cpp</span>
+</nav>
+    <main id="main" tabindex="-1">
+<article class="editor-document project-document">
+  <header>
+    <h1>esp-reddit</h1>
+    <p class="document-intro">A lightweight C++ Reddit API client for ESP32.</p>
+    <ul class="stack" aria-label="Technologies"><li>ESP32</li><li>C++</li><li>ArduinoJson</li></ul>
+    <a class="document-button" href="https://github.com/sudo-Mystic/esp-reddit"><span class="icon" aria-hidden="true">&#xeb14;</span>View source</a>
+  </header>
+  <section class="document-section"><h2>Details</h2><ul class="details-list"><li><strong>API</strong> Listings, posts and comments, with OAuth token refresh and rate-limit backoff.</li><li><strong>Memory</strong> Streaming JSON, field filters and capped page sizes.</li><li><strong>Testing</strong> A separate ESP32 transport lets the client logic run in host tests.</li></ul></section>
+</article></main>
+
+<section class="terminal" id="terminal" aria-labelledby="terminal-title" hidden>
+  <header>
+    <h2 id="terminal-title">Terminal</h2>
+    <button class="icon-button" type="button" data-terminal-close aria-label="Close terminal"><span class="icon" aria-hidden="true">&#xea76;</span></button>
+  </header>
+  <div class="terminal-log" role="log" aria-label="Terminal output"><p>Type <code>help</code> for commands.</p></div>
+  <form>
+    <span aria-hidden="true">mystic:~$</span>
+    <input type="text" aria-label="Terminal command" autocomplete="off" spellcheck="false" maxlength="150">
+  </form>
+</section>
+  </section>
+</div>
+
+<footer class="statusbar" aria-label="Status bar">
+  <a href="https://github.com/sudo-Mystic/portfolio/tree/main" title="View the main branch"><span class="icon" aria-hidden="true">&#xec6f;</span><span>main</span></a>
+  <button type="button" data-terminal aria-expanded="false" aria-controls="terminal" hidden><span class="icon" aria-hidden="true">&#xea85;</span><span>Terminal</span></button>
+  <span class="status-language"><span>UTF-8</span><span>C++</span></span>
 </footer>
 
-<dialog class="jump-dialog" id="jump-dialog" aria-labelledby="jump-title">
+<dialog id="jump-dialog" aria-labelledby="jump-title">
   <div class="jump-header">
-    <label id="jump-title" for="jump-input">Jump to a page</label>
-    <form method="dialog"><button class="jump-close" type="submit" aria-label="Close search">Esc</button></form>
+    <label id="jump-title" for="jump-input">Search files</label>
+    <form method="dialog"><button class="icon-button" type="submit" aria-label="Close search"><span class="icon" aria-hidden="true">&#xea76;</span></button></form>
   </div>
-  <input type="search" id="jump-input" placeholder="Search projects and pages" autocomplete="off" autofocus>
-  <ul class="jump-results"><li data-search="index portfolio rishabh"><a href="../../">Home</a></li>
-<li data-search="project Mobile / Embedded Flutter Dart Bluetooth LE"><a href="../../projects/scoot/">Scoot</a></li>
-<li data-search="project Embedded / Open source ESP32 C++ ArduinoJson"><a href="../../projects/esp-reddit/">esp-reddit</a></li>
-<li data-search="project Web / Applied AI Next.js PostgreSQL Gemini"><a href="../../projects/exam-eval/">Exam Evaluation</a></li>
-<li data-search="project Applied AI / Experiment Python LLMs Story graphs"><a href="../../projects/detroit-jev/">detroit-jev</a></li>
-<li data-search="bio"><a href="../../readme/">About Rishabh</a></li>
-<li data-search="contact"><a href="mailto:mrmysticuniverse@gmail.com">Email Rishabh</a></li>
-<li data-search="preferences theme settings"><a href="../../settings/">Appearance</a></li>
-<li data-search="text compact"><a href="../../simple/">Simple view</a></li></ul>
-  <p class="jump-empty" hidden>No matching pages.</p>
+  <input type="search" id="jump-input" placeholder="Type a filename or project" autocomplete="off" autofocus>
+  <ul class="jump-results"><li data-search="Welcome Portfolio Mobile apps, embedded systems and applied AI."><a class="file-link" href="../../" data-file-id="welcome" data-file-name="Welcome" data-file-intro="Mobile apps, embedded systems and applied AI."><span class="icon file-home" aria-hidden="true">&#xeb06;</span><span>Welcome</span></a></li><li data-search="About Markdown Rishabh Bohra · B.Tech student at IET DAVV. Mobile apps, embedded systems and applied AI."><a class="file-link" href="../../readme/" data-file-id="readme" data-file-name="README.md" data-file-intro="Rishabh Bohra · B.Tech student at IET DAVV. Mobile apps, embedded systems and applied AI."><span class="icon file-markdown" aria-hidden="true">&#xeb1d;</span><span>README.md</span></a></li><li data-search="Scoot Dart Flutter Dart Bluetooth LE Android companion for compatible TVS SmartXonnect scooters."><a class="file-link" href="../../projects/scoot/" data-file-id="scoot" data-file-name="scoot.dart" data-file-intro="Android companion for compatible TVS SmartXonnect scooters."><span class="icon file-code" aria-hidden="true">&#xeae9;</span><span>scoot.dart</span></a></li><li data-search="esp-reddit C++ ESP32 C++ ArduinoJson A lightweight C++ Reddit API client for ESP32."><a class="file-link" href="../../projects/esp-reddit/" data-file-id="esp-reddit" data-file-name="esp_reddit.cpp" data-file-intro="A lightweight C++ Reddit API client for ESP32."><span class="icon file-code" aria-hidden="true">&#xeae9;</span><span>esp_reddit.cpp</span></a></li><li data-search="Exam Evaluation Markdown Next.js PostgreSQL Gemini AI-assisted grading for handwritten exam papers, with faculty review."><a class="file-link" href="../../projects/exam-eval/" data-file-id="exam-eval" data-file-name="exam_eval.md" data-file-intro="AI-assisted grading for handwritten exam papers, with faculty review."><span class="icon file-markdown" aria-hidden="true">&#xeb1d;</span><span>exam_eval.md</span></a></li><li data-search="detroit-jev Python Python LLMs Story graphs An experiment in how AI decisions hold together across a branching story."><a class="file-link" href="../../projects/detroit-jev/" data-file-id="detroit-jev" data-file-name="detroit_jev.py" data-file-intro="An experiment in how AI decisions hold together across a branching story."><span class="icon file-code" aria-hidden="true">&#xeae9;</span><span>detroit_jev.py</span></a></li><li data-search="Settings JSON Choose a color theme for the editor."><a class="file-link" href="../../settings/" data-file-id="settings" data-file-name="settings.json" data-file-intro="Choose a color theme for the editor."><span class="icon file-json" aria-hidden="true">&#xeb0f;</span><span>settings.json</span></a></li></ul>
+  <p class="jump-empty" hidden>No matching files.</p>
   <p class="sr-only" role="status" id="jump-status"></p>
 </dialog>
 </body>
