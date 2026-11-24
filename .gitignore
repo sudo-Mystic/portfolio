@@ -2,3 +2,4 @@ ref/
 build/
 *.log
 dist/
+__pycache__/
