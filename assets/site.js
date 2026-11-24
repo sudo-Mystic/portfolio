@@ -3,6 +3,27 @@
   const workspace = document.querySelector(".workspace");
   const explorer = document.querySelector("#explorer");
   const currentFile = document.body.dataset.currentFile;
+  const systemMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  const motionOption = document.querySelector("#reduce-motion");
+  if (motionOption) {
+    function syncMotionOption() {
+      motionOption.checked = systemMotion.matches || root.dataset.motion === "reduce";
+      motionOption.disabled = systemMotion.matches;
+      motionOption.parentElement.title = systemMotion.matches ? "Reduced motion is enabled on your device" : "";
+    }
+    motionOption.closest("fieldset").hidden = false;
+    syncMotionOption();
+    systemMotion.addEventListener("change", syncMotionOption);
+    window.addEventListener("mystic:preferences", syncMotionOption);
+    motionOption.addEventListener("change", () => {
+      root.dataset.motion = motionOption.checked ? "reduce" : "system";
+      try {
+        localStorage.setItem("mystic-motion", root.dataset.motion);
+      } catch {
+        // This page still respects the current choice.
+      }
+    });
+  }
   const files = new Map(Array.from(explorer.querySelectorAll("[data-file-id]"),
     (link) => [link.dataset.fileId, link]));
 
@@ -22,7 +43,8 @@
     }
   }
 
-  for (const option of document.querySelectorAll(".theme-option input")) {
+  const themeOptions = document.querySelectorAll(".theme-option input");
+  for (const option of themeOptions) {
     option.disabled = false;
     option.checked = option.value === root.dataset.theme;
     option.addEventListener("change", () => {
@@ -32,6 +54,11 @@
       } catch {
         // The current page still uses the selected theme.
       }
+    });
+  }
+  if (themeOptions.length) {
+    window.addEventListener("mystic:preferences", () => {
+      for (const option of themeOptions) option.checked = option.value === root.dataset.theme;
     });
   }
 
@@ -146,6 +173,12 @@
       const link = files.get(id).cloneNode(true);
       link.removeAttribute("class");
       tab.append(link);
+      if (id === currentFile) {
+        const marker = document.createElement("span");
+        marker.className = "tab-marker";
+        marker.setAttribute("aria-hidden", "true");
+        tab.append(marker);
+      }
       if (id !== "welcome") {
         const close = document.createElement("button");
         close.className = "tab-close";

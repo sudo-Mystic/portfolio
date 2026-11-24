@@ -2,7 +2,9 @@
 """Render the portfolio pages for GitHub Pages."""
 
 import argparse
+import hashlib
 import json
+from functools import lru_cache
 from html import escape
 from pathlib import Path
 
@@ -42,6 +44,13 @@ PROJECT_FILES = tuple({
 
 def icon(name, extra=""):
     return f'<span class="icon{extra}" aria-hidden="true">&#x{ICONS[name]};</span>'
+
+
+@lru_cache(maxsize=None)
+def asset(name):
+    path = f"assets/{name}"
+    digest = hashlib.sha256((ROOT / path).read_bytes()).hexdigest()[:12]
+    return f"{path}?v={digest}"
 
 
 def current_attr(item, current):
@@ -183,19 +192,34 @@ def open_source():
     return f'<p><a href="{HOME_ASSISTANT_PR}">Home Assistant</a> · HomeKit heater-cooler temperature range fix.</p>'
 
 
+def motion_graphic(scene):
+    return f"""
+<div class="motion-study" data-scene="{scene}" hidden>
+  <canvas width="560" height="280" aria-hidden="true"></canvas>
+  <button class="replay-study" type="button" aria-label="Replay motion graphic" title="Replay motion graphic" hidden>
+    <span aria-hidden="true"></span>
+  </button>
+</div>"""
+
+
 def homepage(root):
     projects = "\n".join(
-        f'<li><a href="{root}{item["path"]}">{icon(item["icon"], " file-" + item["icon"])}'
+        f'<li><a href="{root}{item["path"]}" data-preview="{item["id"]}">{icon(item["icon"], " file-" + item["icon"])}'
         f'<span><strong>{item["file"]}</strong><small>{item["intro"]}</small></span></a></li>'
         for item in PROJECT_FILES
     )
     return f"""
 <div class="editor-document welcome-document">
-  <header class="welcome-intro" id="about">
-    <img src="{root}logo-256.webp" width="58" height="58" alt="">
-    <div><h1>{NAME}</h1><p>{BIO}</p></div>
-  </header>
-  <p class="document-intro">{FOCUS}</p>
+  <div class="document-hero">
+    <div>
+      <header class="welcome-intro" id="about">
+        <img src="{root}logo-256.webp" width="58" height="58" alt="">
+        <div><h1>{NAME}</h1><p>{BIO}</p></div>
+      </header>
+      <p class="document-intro">{FOCUS}</p>
+    </div>
+    {motion_graphic("welcome")}
+  </div>
   <div class="welcome-grid">
     <section aria-labelledby="start-title">
       <h2 id="start-title">Start</h2>
@@ -226,12 +250,15 @@ def project_page(item):
                       for label, value in item["details"])
     return f"""
 <article class="editor-document project-document">
+  <div class="document-hero">
   <header>
     <h1>{item["name"]}</h1>
     <p class="document-intro">{item["intro"]}</p>
     <ul class="stack" aria-label="Technologies">{tools}</ul>
     {links}
   </header>
+  {motion_graphic(item["id"])}
+  </div>
   <section class="document-section"><h2>Details</h2><ul class="details-list">{details}</ul></section>
 </article>"""
 
@@ -256,6 +283,10 @@ def settings_page():
 <article class="editor-document">
   <h1>Settings</h1>
   <fieldset class="theme-options"><legend>Color theme</legend>{switches}</fieldset>
+  <fieldset class="motion-options" hidden>
+    <legend>Motion</legend>
+    <label><input type="checkbox" id="reduce-motion"> Reduce animations</label>
+  </fieldset>
   <noscript><p>Enable JavaScript to change the editor theme.</p></noscript>
 </article>"""
 
@@ -291,6 +322,9 @@ def metadata(title, description, path, root, indexable):
 def page(item, root, content, indexable=True):
     title = f"{item['name']} · {NAME}"
     description = item["intro"]
+    study_script = ""
+    if item == WELCOME or item in PROJECT_FILES:
+        study_script = f'<script src="{root}{asset("studies.js")}" defer></script>'
     schema = ""
     if item["id"] == "welcome":
         title, description = f"{NAME} · mystic.code", DESCRIPTION
@@ -301,9 +335,11 @@ def page(item, root, content, indexable=True):
 <html lang="en" data-theme="dark-modern">
 <head>
 {metadata(title, description, item["path"], root, indexable)}
-<script src="{root}assets/theme.js"></script>
-<link rel="stylesheet" href="{root}assets/site.css">
-<script src="{root}assets/site.js" defer></script>
+<script src="{root}{asset("theme.js")}"></script>
+<link rel="stylesheet" href="{root}{asset("site.css")}">
+<link rel="stylesheet" href="{root}{asset("motion.css")}">
+<script src="{root}{asset("site.js")}" defer></script>
+{study_script}
 {schema}</head>
 <body data-current-file="{item["id"]}">
 <a class="skip-link" href="#main">Skip to editor</a>
